@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Akop Karapetyan
+// Copyright (c) 2016 Akop Karapetyan
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,9 @@ import org.akop.ararat.view.CrosswordView;
 import java.io.IOException;
 import java.io.InputStream;
 
+
+// Crossword: Double-A's by Ben Tausig
+// http://www.inkwellxwords.com/iwxpuzzles.html
 public class MainActivity
 		extends AppCompatActivity
 		implements CrosswordView.OnLongPressListener, CrosswordView.OnStateChangeListener, CrosswordView.OnSelectionChangeListener
@@ -56,7 +59,12 @@ public class MainActivity
 		mCrosswordView = (CrosswordView) findViewById(R.id.crossword);
 		mHint = (TextView) findViewById(R.id.hint);
 
-		mCrosswordView.setCrossword(readPuzzle(this, R.raw.puzzle));
+		Crossword crossword = readPuzzle(this, R.raw.puzzle);
+
+		setTitle(getString(R.string.title_by_author,
+				crossword.getTitle(), crossword.getAuthor()));
+
+		mCrosswordView.setCrossword(crossword);
 		mCrosswordView.setOnLongPressListener(this);
 		mCrosswordView.setOnStateChangeListener(this);
 		mCrosswordView.setOnSelectionChangeListener(this);
@@ -173,9 +181,9 @@ public class MainActivity
 		if (word != null) {
 			description = word.getNumber() + "";
 			if (word.getDirection() == Crossword.Word.DIR_ACROSS) {
-				description += getString(R.string.across);
+				description += " " + getString(R.string.across);
 			} else if (word.getDirection() == Crossword.Word.DIR_DOWN) {
-				description += getString(R.string.down);
+				description += " " + getString(R.string.down);
 			}
 			description += " • " + word.getHint();
 		}
