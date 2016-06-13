@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akop.ararat.core.Crossword;
@@ -38,9 +39,10 @@ import java.io.InputStream;
 
 public class MainActivity
 		extends AppCompatActivity
-		implements CrosswordView.OnLongPressListener, CrosswordView.OnStateChangeListener
+		implements CrosswordView.OnLongPressListener, CrosswordView.OnStateChangeListener, CrosswordView.OnSelectionChangeListener
 {
 	private CrosswordView mCrosswordView;
+	private TextView mHint;
 
 	private boolean mSolvedShown;
 
@@ -52,12 +54,18 @@ public class MainActivity
 		setContentView(R.layout.activity_main);
 
 		mCrosswordView = (CrosswordView) findViewById(R.id.crossword);
+		mHint = (TextView) findViewById(R.id.hint);
+
 		mCrosswordView.setCrossword(readPuzzle(this, R.raw.puzzle));
 		mCrosswordView.setOnLongPressListener(this);
 		mCrosswordView.setOnStateChangeListener(this);
+		mCrosswordView.setOnSelectionChangeListener(this);
 
 		mCrosswordView.setUndoMode(CrosswordView.UNDO_NONE);
 		mCrosswordView.setMarkerDisplayMode(CrosswordView.MARKER_CHEAT);
+
+		onSelectionChanged(mCrosswordView,
+				mCrosswordView.getSelectedWord(), mCrosswordView.getSelectedCell());
 	}
 
 	@Override
@@ -156,5 +164,22 @@ public class MainActivity
 		}
 
 		return cb.build();
+	}
+
+	@Override
+	public void onSelectionChanged(CrosswordView view, Crossword.Word word, int position)
+	{
+		String description = null;
+		if (word != null) {
+			description = word.getNumber() + "";
+			if (word.getDirection() == Crossword.Word.DIR_ACROSS) {
+				description += getString(R.string.across);
+			} else if (word.getDirection() == Crossword.Word.DIR_DOWN) {
+				description += getString(R.string.down);
+			}
+			description += " • " + word.getHint();
+		}
+
+		mHint.setText(description);
 	}
 }

@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">CrosswordTest</string>
+    <string name="app_name">CrosswordDemo</string>
     <string name="solve_square">Solve square</string>
     <string name="solve_word">Solve word</string>
     <string name="solve_puzzle">Solve puzzle</string>
     <string name="restart">Restart</string>
+    <string name="across">Across</string>
+    <string name="down">Down</string>
 </resources>
