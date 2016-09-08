@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akop.ararat.core.Crossword;
+import org.akop.ararat.core.CrosswordState;
 import org.akop.ararat.io.PuzFormatter;
 import org.akop.ararat.view.CrosswordView;
 
@@ -81,7 +82,7 @@ public class MainActivity
 	{
 		super.onRestoreInstanceState(savedInstanceState);
 
-		mCrosswordView.restoreState((Crossword.State) savedInstanceState.getParcelable("state"));
+		mCrosswordView.restoreState((CrosswordState) savedInstanceState.getParcelable("state"));
 		mSolvedShown = savedInstanceState.getBoolean("solved");
 	}
 
